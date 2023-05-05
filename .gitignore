@@ -1,0 +1,17 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/compiler.xml
+/sonarlint/issuestore/index.pb
+/jarRepositories.xml
+/misc.xml
+/modules.xml
+/vcs.xml
+/dto/target/
+**/target/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
