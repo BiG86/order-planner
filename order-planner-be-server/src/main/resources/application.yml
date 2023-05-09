@@ -1,73 +1,16 @@
 server:
   port: ${SERVER_PORT:8081}
-management:
-  server:
-    port: ${MANAGEMENT_PORT:9090}
-  endpoints:
-    web:
-      exposure:
-        include:
-          - "*"
-          - "health"
-  endpoint:
-    health:
-      show-details: always
-      probes:
-        enabled: true
-  info:
-    git:
-      mode: full
-  health:
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true
-  metrics:
-    enabled: true
 logging:
   level:
     root: ${LOGGING_LEVEL:DEBUG}
-validation:
-  regex:
-    description: ${DESCRIPTION_REGEX:^[0-9A-Za-z-_]+$}
-pagination:
-  default:
-    page-size: ${PAGINATION_DEFAULT_PAGE_SIZE:10}
-    order-by: ${PAGINATION_DEFAULT_ORDER_BY:id}
-    order-direction: ${PAGINATION_DEFAULT_ORDER_DIRECTION:DESC}
 spring:
+  data:
+    mongodb:
+      uri: "mongodb://admin:password@localhost:27017/orderplanner"
   banner:
     location: order-planner-banner.logo
-  datasource:
-    url: ${DB_CONN:jdbc:mysql://book-manager-mysql:3306/bookmanager?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC}
-    username: ${DB_USER:root}
-    password: ${DB_PASSWORD:changeme}
-    driverClassName: com.mysql.cj.jdbc.Driver
-    hikari:
-      minimumIdle: ${DB_POOL_MIN:3}
-      maximumPoolSize: ${DB_POOL_MAX:10}
-      connectionTimeout: ${DB_CONNECTION_TIMEOUT:5000}
   jackson:
     serialization:
       write-dates-as-timestamps: false
   jpa:
     show-sql: ${SHOW_SQL:false}
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    database-platform: org.hibernate.dialect.MySQL57Dialect
-  security:
-    oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: ${AUTH_CLIENT:book-manager-be}
-            authorization-grant-type: authorization_code
-            scope: openid
-        provider:
-          keycloak:
-            issuer-uri: ${ISSUER-URI:http://keycloak:8080/auth/realms/book}
-            user-name-attribute: preferred_username
-      resourceserver:
-        jwt:
-          issuer-uri: ${ISSUER-URI:http://keycloak:8080/auth/realms/book}

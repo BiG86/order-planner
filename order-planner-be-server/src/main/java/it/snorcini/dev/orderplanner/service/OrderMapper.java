@@ -1,4 +1,4 @@
-package it.snorcini.dev.orderplanner;
+package it.snorcini.dev.orderplanner.service;
 
 import it.snorcini.dev.orderplanner.dto.OrderDTO;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
