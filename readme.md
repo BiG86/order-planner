@@ -10,8 +10,9 @@ The Order Planner is a POC about microservices with SpringBoot 3.
 
 ## Requirements
 
-This poc requires Docker and compose.
-You also need [Switch Host](https://github.com/oldj/SwitchHosts/releases) or similar tools to add the following entries in the host file:
+- This poc requires Docker and compose.
+- CPUs with AVX instructions set. 
+- You also need [Switch Host](https://github.com/oldj/SwitchHosts/releases) or similar tools to add the following entries in the host file:
 ```
 127.0.0.1 order-planner-fe
 127.0.0.1 order-planner
