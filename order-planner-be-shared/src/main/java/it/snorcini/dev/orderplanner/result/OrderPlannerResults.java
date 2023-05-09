@@ -13,12 +13,7 @@ public enum OrderPlannerResults {
     OPERATION_SUCCESS(0, "Operation OK"),
     INVALID_REQUEST(-1, "The request is not valid"),
     //NOT_FOUND
-    BOOK_NOT_FOUND(-2, "Book not found"),
-    //CODE_DUPLICATED
-    BOOK_CODE_DUPLICATED(-12, "Isdn is duplicated"),
-    //NOT_ALLOWED
-    CIRCUIT_BREAKER_OPEN(-9998,
-            "Service unavailable"),
+    ORDER_NOT_FOUND(-2, "Order not found"),
     GENERIC_ERROR(-9999, "Generic error");
 
     private int resultCode;

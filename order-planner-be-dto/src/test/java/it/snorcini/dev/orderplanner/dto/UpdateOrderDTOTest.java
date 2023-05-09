@@ -18,10 +18,10 @@ class UpdateOrderDTOTest {
 
     @Test
     void testUpdateBookDTOTest02() {
-        long id = 1L;
+        String id = "1L";
         updateBookDTO = new UpdateOrderDTO(id);
         UpdateOrderDTO updateBookDTOSetter = new UpdateOrderDTO();
-        updateBookDTOSetter.setId(id);
+        updateBookDTOSetter.setUid(id);
         assertEquals(updateBookDTOSetter, updateBookDTO, "These objects should be equal");
     }
 }

@@ -21,9 +21,7 @@ public class PatternConstraintValidator extends AbstractBaseConstraintValidator<
     @AllArgsConstructor
     public enum PatternConstraintFieldEnum {
 
-        ISBN(null),
-        TITLE(null),
-        AUTHOR(null);
+        DESCRIPTION(null);
 
         private String value;
 
@@ -35,12 +33,8 @@ public class PatternConstraintValidator extends AbstractBaseConstraintValidator<
         }
     }
 
-    @Value("${validation.regex.isbn}")
-    private String isbn;
-    @Value("${validation.regex.title}")
-    private String title;
-    @Value("${validation.regex.author}")
-    private String author;
+    @Value("${validation.regex.description}")
+    private String description;
 
     private PatternConstraintFieldEnum fieldType;
 
@@ -52,9 +46,7 @@ public class PatternConstraintValidator extends AbstractBaseConstraintValidator<
     @Override
     public void initialize(final PatternConstraint patternConstraint) {
 
-        PatternConstraintFieldEnum.ISBN.setValue(isbn);
-        PatternConstraintFieldEnum.TITLE.setValue(title);
-        PatternConstraintFieldEnum.AUTHOR.setValue(author);
+        PatternConstraintFieldEnum.DESCRIPTION.setValue(description);
 
         this.fieldType = patternConstraint.fieldType();
     }

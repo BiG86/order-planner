@@ -1,6 +1,6 @@
 # Order Planner
 
-The Order Planner is a POC about microservices with springboot 3.
+The Order Planner is a POC about microservices with SpringBoot 3.
 
 ## Table of contents
 
@@ -15,12 +15,12 @@ You also need [Switch Host](https://github.com/oldj/SwitchHosts/releases) or sim
 ```
 127.0.0.1 order-planner-fe
 127.0.0.1 order-planner
-127.0.0.1 order-planner-mysql
+127.0.0.1 order-planner-mongodb
 ```
 
 ## Modules Description
 
-- Percona mysql database
+- MongoDB database
 - Spring Boot back end
 - Angular front end
 

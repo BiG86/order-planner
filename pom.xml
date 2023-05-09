@@ -29,7 +29,7 @@
         <java.version>17</java.version>
         <mapstruct.version>1.5.0.Final</mapstruct.version>
         <org.mapstruct.version>1.5.0.Final</org.mapstruct.version>
-        <lombok.version>1.18.20</lombok.version>
+        <lombok.version>1.18.26</lombok.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -44,13 +44,9 @@
         <assertj-core.version>3.19.0</assertj-core.version>
         <h2.version>2.0.206</h2.version>
         <wiremock.version>1.58</wiremock.version>
-        <jjwt.version>0.9.1</jjwt.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <logstash-logback-encode.version>6.4</logstash-logback-encode.version>
-        <log-backclassic.version>1.2.10</log-backclassic.version>
-        <spring.version>5.7.5</spring.version>
         <tomcat-embed.version>9.0.58</tomcat-embed.version>
-        <spring-boot.version>3.0.5</spring-boot.version>
+        <spring-boot.version>3.0.6</spring-boot.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
         <owasp-dependency-check.version>7.1.1</owasp-dependency-check.version>
@@ -71,16 +67,6 @@
                 <artifactId>tomcat-embed-core</artifactId>
                 <version>${tomcat-embed.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-crypto</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -90,36 +76,16 @@
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${maven-clean-plugin.version}</version>
-                    <configuration>
-                        <failOnError>false</failOnError>
-                        <filesets>
-                            <fileset>
-                                <directory>deployments</directory>
-                                <followSymlinks>false</followSymlinks>
-                            </fileset>
-                        </filesets>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.version}</version>
-                    <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${org.mapstruct.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

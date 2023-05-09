@@ -1,6 +1,6 @@
 package it.snorcini.dev.orderplanner.repository;
 
-import it.snorcini.dev.orderplanner.entity.Order;
+import it.snorcini.dev.orderplanner.entity.Depot;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Spring Data MongoDB repository for the Order entity.
+ * Spring Data MongoDB repository for the Depot entity.
  */
 @Repository
-public interface OrderRepository extends MongoRepository<Order, String>, QuerydslPredicateExecutor<Order> {
+public interface DepotRepository extends MongoRepository<Depot, String>, QuerydslPredicateExecutor<Depot> {
 
 
-    Optional<Order> findByUid(String uid);
+    Optional<Depot> findByUid(String uid);
 }

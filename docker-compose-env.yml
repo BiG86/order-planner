@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  order-planner-mongodb:
+    image: mongo:latest
+    container_name: order-planner-mongodb
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      - order-network
+    volumes:
+      - volume-mongo:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  order-planner:
+    image: snorc/order-planner-be-server:1.0.0
+    container_name: order-planner
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - order-planner-mongodb
+    networks:
+      - order-network
+#  book-manager-fe:
+#    image: snorc/book-manager-fe:1.0.0
+#    container_name: book-manager-fe
+#    restart: always
+#    ports:
+#      - "4200:80"
+#    depends_on:
+#      - keycloak
+#      - book-manager-be
+#    networks:
+#      - book-network
+volumes:
+  volume-mongo:
+    name: order-planner-mongo
+networks:
+  order-network:
+    name: order-network

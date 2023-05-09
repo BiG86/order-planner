@@ -5,7 +5,6 @@ import it.snorcini.dev.orderplanner.dto.OrderListResponse;
 import it.snorcini.dev.orderplanner.dto.OrderPlannerBaseResponse;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
 import it.snorcini.dev.orderplanner.service.OrderService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,13 +19,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {OrderController.class})
-@DisplayName("Tests regarding the BookController class")
+@DisplayName("Tests regarding the OrderController class")
 class OrderControllerTest {
 
     @Autowired
@@ -40,80 +38,52 @@ class OrderControllerTest {
     @Mock
     private OrderListResponse responseListMock;
     @Mock
-    private UpdateOrderDTO updateBookDTOMock;
+    private UpdateOrderDTO updateOrderDTOMock;
 
-    public static final String PREFERRED_USERNAME = "preferred_username";
-
-    private final String username = "usernameMock";
-    private final Long bookId = 1L;
 
     @Test
     @DisplayName("Should call getFilteredList and return OK")
     void testGetFilteredList01() {
         // given
-        doReturn(responseListMock).when(orderServiceMock).getBooks(bookId, null, null, null, null);
+        doReturn(responseListMock).when(orderServiceMock).getOrders();
 
         // when
         ResponseEntity<OrderListResponse> response = target
-                .getFilteredList(bookId, null, null, null, null);
+                .getFilteredList();
 
         // then
-        verify(orderServiceMock, times(1)).getBooks(bookId, null, null, null, null);
+        verify(orderServiceMock, times(1)).getOrders();
         assertNotNull(response.getBody(), "These objects should be not null");
         assertEquals(HttpStatus.OK, response.getStatusCode(), "These objects should be equal");
     }
 
     @Test
-    @DisplayName("Should call saveBook and return OK")
-    void testSaveBook01() {
+    @DisplayName("Should call saveOrder and return OK")
+    void testSaveOrder01() {
         // given
-        doReturn(responseMock).when(orderServiceMock).saveBook(orderDTOMock, username);
+        doReturn(responseMock).when(orderServiceMock).saveOrder(orderDTOMock);
 
         // when
         ResponseEntity<OrderPlannerBaseResponse> response = target
-                .saveBook(orderDTOMock, getJwtMock(username));
+                .saveOrder(orderDTOMock);
 
         // then
-        verify(orderServiceMock, times(1)).saveBook(orderDTOMock, username);
-        assertNotNull(response.getBody(), "These objects should be not null");
+        verify(orderServiceMock, times(1)).saveOrder(orderDTOMock);
         assertEquals(HttpStatus.OK, response.getStatusCode(), "These objects should be equal");
     }
 
     @Test
-    @DisplayName("Should call updateBook and return OK")
-    void testUpdateBook01() {
+    @DisplayName("Should call updateOrder and return OK")
+    void testUpdateOrder01() {
         // given
-        doReturn(responseMock).when(orderServiceMock).updateBook(updateBookDTOMock, username);
+        doReturn(responseMock).when(orderServiceMock).updateOrder(updateOrderDTOMock);
 
         // when
-        ResponseEntity<OrderPlannerBaseResponse> response = target
-                .updateBook(updateBookDTOMock, getJwtMock(username));
+        ResponseEntity<OrderPlannerBaseResponse> response = target.updateOrder(updateOrderDTOMock);
 
         // then
-        verify(orderServiceMock, times(1)).updateBook(updateBookDTOMock, username);
+        verify(orderServiceMock, times(1)).updateOrder(updateOrderDTOMock);
         assertNotNull(response.getBody(), "These objects should be not null");
         assertEquals(HttpStatus.OK, response.getStatusCode(), "These objects should be equal");
-    }
-
-    @Test
-    @DisplayName("Should call deleteBook and return OK")
-    void testDeleteBook01() {
-        // given
-        doReturn(responseMock).when(orderServiceMock).deleteBook(bookId, username);
-
-        // when
-        ResponseEntity<OrderPlannerBaseResponse> response = target
-                .deleteBook(bookId, getJwtMock(username));
-
-        // then
-        verify(orderServiceMock, times(1)).deleteBook(bookId, username);
-        assertNotNull(response.getBody(), "These objects should be not null");
-        assertEquals(HttpStatus.OK, response.getStatusCode(), "These objects should be equal");
-    }
-
-    public static Jwt getJwtMock(final String usernameMock) {
-        Jwt jwtMock = mock(Jwt.class);
-        doReturn(usernameMock).when(jwtMock).getClaimAsString(PREFERRED_USERNAME);
-        return jwtMock;
     }
 }

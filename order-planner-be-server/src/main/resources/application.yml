@@ -29,9 +29,7 @@ logging:
     root: ${LOGGING_LEVEL:DEBUG}
 validation:
   regex:
-    isbn: ${ISBN_REGEX:^[0-9A-Za-z-_]+$}
-    title: ${TITLE_REGEX:^[0-9A-Za-z-_]+$}
-    author: ${AUTHOR_REGEX:^[0-9A-Za-z-_]+$}
+    description: ${DESCRIPTION_REGEX:^[0-9A-Za-z-_]+$}
 pagination:
   default:
     page-size: ${PAGINATION_DEFAULT_PAGE_SIZE:10}

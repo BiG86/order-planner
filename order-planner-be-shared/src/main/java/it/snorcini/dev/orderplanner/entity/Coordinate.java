@@ -1,16 +1,15 @@
-package it.snorcini.dev.orderplanner.dto;
+package it.snorcini.dev.orderplanner.entity;
 
 import it.snorcini.dev.orderplanner.error.OrderPlannerValidationErrors;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-
 /**
- * DTO used for creation of a Book.
+ * DTO used for creation of an Order.
  * <p>
  * Methods:
  * - constructor
@@ -23,9 +22,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Validated
-public class OrderDTO  {
+public class Coordinate {
 
-    @NotNull(message = OrderPlannerValidationErrors.ORDERS_NULL)
-    protected List<it.snorcini.dev.orderplanner.entity.Package> packages;
+    @Valid
+    @NotNull(message = OrderPlannerValidationErrors.LATITUDE_NULL)
+    protected Long latitude;
 
+    @Valid
+    @NotNull(message = OrderPlannerValidationErrors.LONGITUDE_NULL)
+    protected Long longitude;
 }

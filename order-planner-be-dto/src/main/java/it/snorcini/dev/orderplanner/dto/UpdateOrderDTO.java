@@ -31,20 +31,6 @@ public class UpdateOrderDTO extends OrderDTO {
     /**
      * Contains the value of primary key identify the item on DB.
      */
-    @NotNull(message = OrderPlannerValidationErrors.BOOK_ID_NULL)
-    protected Long id;
-
-    /**
-     * ToString method.
-     *
-     * @return a string item representation
-     */
-    @Override
-    public String toString() {
-        return new StringBuilder()
-                .append("UpdateBookDTO {\n")
-                .append("    ").append(toIndentedString(super.toString())).append('\n')
-                .append("    id: ").append(id).append('\n')
-                .append('}').toString();
-    }
+    @NotNull(message = OrderPlannerValidationErrors.ORDER_ID_NULL)
+    protected String uid;
 }

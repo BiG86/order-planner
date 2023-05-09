@@ -1,13 +1,13 @@
 package it.snorcini.dev.orderplanner;
 
 import it.snorcini.dev.orderplanner.dto.OrderDTO;
-import it.snorcini.dev.orderplanner.dto.DetailOrderDTO;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
 import it.snorcini.dev.orderplanner.entity.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * MapStruct mapper interface for the Book entity.
@@ -15,43 +15,36 @@ import java.time.OffsetDateTime;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
+    @Named("mapPackages")
+    List<it.snorcini.dev.orderplanner.entity.Package> mapPackages(
+            List<it.snorcini.dev.orderplanner.entity.Package> packages);
+
     /**
      * From entity to dto.
      *
-     * @param order the book entity
-     * @return the DetailBookDTO
+     * @param order the order entity
+     * @return the DetailOrderDTO
      */
-    @Mapping(target = "activities.dateInsert", source = "dateInsert")
-    @Mapping(target = "activities.dateModify", source = "dateModify")
-    @Mapping(target = "activities.lastUserModify", source = "lastUserModify")
-    DetailOrderDTO bookToDetailBookDTO(Order order);
+    @Mapping(target = "packages", source = "packages", qualifiedByName = "mapPackages")
+    UpdateOrderDTO orderToDetailOrderDTO(Order order);
 
     /**
      * From dto to entity.
      *
-     * @param orderDTO the book data transfer object
-     * @return the Book entity
+     * @param orderDTO the order data transfer object
+     * @return the order entity
      */
-    Order bookDtoToBook(OrderDTO orderDTO,
-                        OffsetDateTime dateInsert,
-                        OffsetDateTime dateModify,
-                        String lastUserModify);
+    Order orderDtoToOrder(OrderDTO orderDTO);
 
     /**
      * From update dto to entity.
      *
-     * @param bookDTO   the application dto
-     * @param id             entity id to be updated
-     * @param dateInsert     entity creation date
-     * @param dateModify     entity last modified date
-     * @param lastUserModify entity last user modify
+     * @param bookDTO    the application dto
+     * @param uid         entity id to be updated
      * @return the book entity with activities
      */
-    Order updateBookDTOToBookEntity(UpdateOrderDTO bookDTO,
-                                    Long id,
-                                    OffsetDateTime dateInsert,
-                                    OffsetDateTime dateModify,
-                                    String lastUserModify);
+    Order updateOrderDTOToOrderEntity(UpdateOrderDTO bookDTO,
+                                      String uid);
 
 
 }

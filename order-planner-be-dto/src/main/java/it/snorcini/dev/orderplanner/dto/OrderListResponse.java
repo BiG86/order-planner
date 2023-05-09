@@ -1,15 +1,12 @@
 package it.snorcini.dev.orderplanner.dto;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -25,37 +22,16 @@ import java.util.List;
  * generic response data.
  */
 @Builder
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderListResponse extends PageableListResponse {
-
-    public OrderListResponse(@PositiveOrZero @NotNull final Long totalNumber,
-                             final List<DetailOrderDTO> payload) {
-        super(totalNumber);
-        this.payload = payload;
-    }
+public class OrderListResponse extends OrderPlannerBaseResponse {
 
     /**
      * The list of books.
      */
     @Valid
-    private List<DetailOrderDTO> payload;
+    private List<UpdateOrderDTO> payload;
 
-
-    /**
-     * ToString method.
-     *
-     * @return a string item representation
-     */
-    @Override
-    public String toString() {
-        return new StringBuilder()
-                .append("BookListResponse {\n")
-                .append("    ").append(toIndentedString(super.toString())).append('\n')
-                .append("    payload: ").append(toIndentedString(payload)).append('\n')
-                .append('}').toString();
-    }
 }
