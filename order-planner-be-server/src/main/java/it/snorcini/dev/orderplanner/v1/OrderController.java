@@ -70,11 +70,12 @@ public class OrderController {
      * @return an orders list
      */
     @GetMapping(value = "")
-    public ResponseEntity<OrderListResponse> getFilteredList(@RequestParam("status") final OrderStatus status)
+    public ResponseEntity<OrderListResponse> getFilteredList(
+            @RequestParam(required = false, name = "status") final String status)
             throws OrderPlannerServiceException {
         log.debug("orderController.getFilteredList[]");
         return new ResponseEntity<>(
-                orderService.getOrders(status),
+                orderService.getOrders(status != null ? OrderStatus.valueOf(status) : null),
                 HttpStatus.OK);
     }
 }

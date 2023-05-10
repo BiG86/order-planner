@@ -11,7 +11,7 @@ db.depot.insert({
 db.order.insert({
     "_id": ObjectId("639b2e45493f8d387f641587"),
     "_class": "it.snorcini.dev.orderplanner.entity.Order",
-    "status": "initial",
+    "status": "INITIAL",
     "packages": [
     {
         "description": "TestBox1",
