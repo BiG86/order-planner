@@ -1,14 +1,14 @@
 package it.snorcini.dev.orderplanner.dto;
 
+import it.snorcini.dev.orderplanner.entity.OrderStatus;
 import it.snorcini.dev.orderplanner.error.OrderPlannerValidationErrors;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
-
-import jakarta.validation.constraints.NotNull;
 
 /**
  * DTO used to update a Book.
@@ -33,4 +33,6 @@ public class UpdateOrderDTO extends OrderDTO {
      */
     @NotNull(message = OrderPlannerValidationErrors.ORDER_ID_NULL)
     protected String uid;
+
+    protected OrderStatus status;
 }

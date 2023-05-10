@@ -31,6 +31,9 @@ public class Order implements Serializable {
     @Id
     private String uid;
 
+    @Field(name = "status")
+    private OrderStatus status;
+
     @NotNull
     @Field(name = "packages")
     private List<it.snorcini.dev.orderplanner.entity.Package> packages;

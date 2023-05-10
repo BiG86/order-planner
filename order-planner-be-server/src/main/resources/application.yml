@@ -6,7 +6,7 @@ logging:
 spring:
   data:
     mongodb:
-      uri: "mongodb://admin:password@localhost:27017/orderplanner"
+      uri: "mongodb://order-planner-mongodb:27017/orderplanner"
   banner:
     location: order-planner-banner.logo
   jackson:

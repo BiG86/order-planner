@@ -1,4 +1,4 @@
-package it.snorcini.dev.orderplanner.service;
+package it.snorcini.dev.orderplanner.mapper;
 
 import it.snorcini.dev.orderplanner.dto.OrderDTO;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
@@ -10,7 +10,7 @@ import org.mapstruct.Named;
 import java.util.List;
 
 /**
- * MapStruct mapper interface for the Book entity.
+ * MapStruct mapper interface for the Order entity.
  */
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
@@ -34,17 +34,18 @@ public interface OrderMapper {
      * @param orderDTO the order data transfer object
      * @return the order entity
      */
+    @Mapping(target = "packages", source = "packages", qualifiedByName = "mapPackages")
     Order orderDtoToOrder(OrderDTO orderDTO);
 
     /**
      * From update dto to entity.
      *
-     * @param bookDTO    the application dto
+     * @param orderDTO    the application dto
      * @param uid         entity id to be updated
      * @return the book entity with activities
      */
-    Order updateOrderDTOToOrderEntity(UpdateOrderDTO bookDTO,
+    @Mapping(target = "status", source = "orderDTO.status")
+    Order updateOrderDTOToOrderEntity(UpdateOrderDTO orderDTO,
                                       String uid);
-
 
 }

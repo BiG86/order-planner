@@ -5,8 +5,11 @@ import it.snorcini.dev.orderplanner.dto.OrderListResponse;
 import it.snorcini.dev.orderplanner.dto.OrderPlannerBaseResponse;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
 import it.snorcini.dev.orderplanner.entity.Order;
+import it.snorcini.dev.orderplanner.entity.OrderStatus;
 import it.snorcini.dev.orderplanner.entity.Package;
 import it.snorcini.dev.orderplanner.exception.OrderPlannerServiceException;
+import it.snorcini.dev.orderplanner.mapper.OrderMapper;
+import it.snorcini.dev.orderplanner.repository.DepotRepository;
 import it.snorcini.dev.orderplanner.repository.OrderRepository;
 import it.snorcini.dev.orderplanner.result.OrderPlannerResults;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +44,8 @@ class OrderServiceImplementationTest {
     @MockBean
     private OrderRepository orderRepositoryMock;
     @MockBean
+    private DepotRepository depotRepositoryMock;
+    @MockBean
     private OrderMapper orderMapperMock;
     @Mock
     private Order orderMock;
@@ -63,6 +68,7 @@ class OrderServiceImplementationTest {
         orderDTO.setPackages(packagesList);
         updateOrderDTO.setUid(orderId);
         updateOrderDTO.setPackages(packagesList);
+        updateOrderDTO.setStatus(OrderStatus.INITIAL);
         orderList = new ArrayList<>();
         orderList.add(Order.builder().build());
         doReturn(orderList.stream()).when(orderListMock).stream();
@@ -70,6 +76,7 @@ class OrderServiceImplementationTest {
         // Instantiate test target and spy
         target = new OrderServiceImplementation(
                 orderRepositoryMock,
+                depotRepositoryMock,
                 orderMapperMock
         );
         orderServiceImplementationSpy = spy(target);
@@ -82,7 +89,7 @@ class OrderServiceImplementationTest {
         doReturn(orderListMock).when(orderRepositoryMock).findAll();
 
         //RUN & VERIFY
-        OrderListResponse orderListResponse = target.getOrders();
+        OrderListResponse orderListResponse = target.getOrders(null);
 
         assertEquals(orderListResponse.getPayload().size(), orderList.size(), "These objects should be equal");
         verify(orderRepositoryMock, times(1)).findAll();
@@ -96,8 +103,7 @@ class OrderServiceImplementationTest {
         doReturn(Optional.empty()).when(orderRepositoryMock)
                 .findByUid(anyString());
         doReturn(orderMock).when(orderMapperMock)
-                .orderDtoToOrder(
-                        orderDTOMock);
+                .orderDtoToOrder(any());
         doReturn(new OrderPlannerBaseResponse()).when(orderServiceImplementationSpy)
                 .setOperationResult(any(), any(), any());
 
@@ -111,7 +117,7 @@ class OrderServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("Should throw OrderPlannerServiceException with element not found when findByIdAndDateDeleteIsNull " +
+    @DisplayName("Should throw OrderPlannerServiceException with element not found when findByUid " +
             "returns no elements")
     void testUpdateOrder01() {
         //PREPARE
@@ -129,7 +135,7 @@ class OrderServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("Should call findFirstByCodeAndDateDeleteIsNull, save and setOperationResult with success")
+    @DisplayName("Should call updateOrder, save and setOperationResult with success")
     void testUpdateOrder03() {
         //PREPARE
         doReturn(Optional.of(orderMock)).when(orderRepositoryMock).findByUid(orderId);
@@ -140,8 +146,7 @@ class OrderServiceImplementationTest {
         );
 
         //RUN
-        OrderPlannerBaseResponse result = orderServiceImplementationSpy.updateOrder(
-                updateOrderDTO);
+        OrderPlannerBaseResponse result = orderServiceImplementationSpy.updateOrder(updateOrderDTO);
 
         //VERIFY
         assertEquals(0, result.getResultCode(), "These objects should be equal");

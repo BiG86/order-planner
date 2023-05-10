@@ -4,6 +4,7 @@ import it.snorcini.dev.orderplanner.dto.OrderDTO;
 import it.snorcini.dev.orderplanner.dto.OrderListResponse;
 import it.snorcini.dev.orderplanner.dto.OrderPlannerBaseResponse;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
+import it.snorcini.dev.orderplanner.entity.OrderStatus;
 import it.snorcini.dev.orderplanner.exception.OrderPlannerServiceException;
 import it.snorcini.dev.orderplanner.service.OrderService;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Validated
@@ -33,29 +35,30 @@ public class OrderController {
     /**
      * Insert a single order.
      *
-     * @param orderDTO   book data transfer object
+     * @param orderDTO   order data transfer object
      * @return operation result message
      */
     @PostMapping(value = "")
     public ResponseEntity<OrderPlannerBaseResponse> saveOrder(
             @Valid @RequestBody final OrderDTO orderDTO)
             throws OrderPlannerServiceException {
-        log.debug("bookController.saveOrder[book = {}]", orderDTO);
+        log.debug("orderController.saveOrder[order = {}]", orderDTO);
         orderService.saveOrder(orderDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(OrderPlannerBaseResponse.builder().resultMessage("Order taken over").build(),
+                HttpStatus.OK);
     }
 
     /**
      * Update an order.
      *
-     * @param updateOrderDTO the updated book data
+     * @param updateOrderDTO the updated order data
      * @return the operation result
      */
     @PutMapping(value = "")
     public ResponseEntity<OrderPlannerBaseResponse> updateOrder(
             @Valid @RequestBody final UpdateOrderDTO updateOrderDTO)
             throws OrderPlannerServiceException {
-        log.debug("bookController.updateOrder[application = {}]", updateOrderDTO);
+        log.debug("orderController.updateOrder[application = {}]", updateOrderDTO);
         return new ResponseEntity<>(
                 orderService.updateOrder(updateOrderDTO),
                 HttpStatus.OK);
@@ -64,14 +67,14 @@ public class OrderController {
     /**
      * Return the available orders.
      *
-     * @return a list of book
+     * @return an orders list
      */
     @GetMapping(value = "")
-    public ResponseEntity<OrderListResponse> getFilteredList()
+    public ResponseEntity<OrderListResponse> getFilteredList(@RequestParam("status") final OrderStatus status)
             throws OrderPlannerServiceException {
-        log.debug("bookController.getFilteredList[]");
+        log.debug("orderController.getFilteredList[]");
         return new ResponseEntity<>(
-                orderService.getOrders(),
+                orderService.getOrders(status),
                 HttpStatus.OK);
     }
 }

@@ -3,7 +3,9 @@ package it.snorcini.dev.orderplanner.service;
 import it.snorcini.dev.orderplanner.dto.OrderDTO;
 import it.snorcini.dev.orderplanner.dto.OrderListResponse;
 import it.snorcini.dev.orderplanner.dto.OrderPlannerBaseResponse;
+import it.snorcini.dev.orderplanner.dto.PlanResponse;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
+import it.snorcini.dev.orderplanner.entity.OrderStatus;
 import it.snorcini.dev.orderplanner.exception.OrderPlannerServiceException;
 import jakarta.validation.Valid;
 
@@ -33,10 +35,18 @@ public interface OrderService {
 
 
     /**
-     * Retrieve Books with optional filter.
+     * Retrieve Orders with optional filter.
      *
      * @return The response containing the order list
      */
-    OrderListResponse getOrders() throws OrderPlannerServiceException;
+    OrderListResponse getOrders(OrderStatus status) throws OrderPlannerServiceException;
+
+    /**
+     * Retrieve Books with optional filter.
+     *
+     * @param depotUid the starting depot id
+     * @return The response containing the order list
+     */
+    PlanResponse startPlan(String depotUid) throws OrderPlannerServiceException;
 
 }

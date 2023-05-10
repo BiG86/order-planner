@@ -4,6 +4,7 @@ import com.querydsl.core.annotations.QueryEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -21,6 +22,7 @@ import java.io.Serializable;
  * <p>
  */
 @Document(collection = "depot")
+@EqualsAndHashCode(of = {"uid"})
 @QueryEntity
 @Data
 @Builder
@@ -38,10 +40,10 @@ public class Depot implements Serializable {
 
     @NotNull
     @Field(name = "latitude")
-    private Long latitude;
+    private Double latitude;
 
     @NotNull
     @Field(name = "longitude")
-    private Long longitude;
+    private Double longitude;
 
 }

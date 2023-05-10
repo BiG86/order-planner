@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -45,14 +46,14 @@ class OrderControllerTest {
     @DisplayName("Should call getFilteredList and return OK")
     void testGetFilteredList01() {
         // given
-        doReturn(responseListMock).when(orderServiceMock).getOrders();
+        doReturn(responseListMock).when(orderServiceMock).getOrders(any());
 
         // when
         ResponseEntity<OrderListResponse> response = target
-                .getFilteredList();
+                .getFilteredList(null);
 
         // then
-        verify(orderServiceMock, times(1)).getOrders();
+        verify(orderServiceMock, times(1)).getOrders(any());
         assertNotNull(response.getBody(), "These objects should be not null");
         assertEquals(HttpStatus.OK, response.getStatusCode(), "These objects should be equal");
     }

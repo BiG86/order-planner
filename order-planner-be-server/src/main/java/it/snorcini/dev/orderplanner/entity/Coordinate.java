@@ -4,6 +4,7 @@ import it.snorcini.dev.orderplanner.error.OrderPlannerValidationErrors;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -22,13 +23,14 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 @NoArgsConstructor
 @Validated
+@Builder
 public class Coordinate {
 
     @Valid
     @NotNull(message = OrderPlannerValidationErrors.LATITUDE_NULL)
-    protected Long latitude;
+    protected Double latitude;
 
     @Valid
     @NotNull(message = OrderPlannerValidationErrors.LONGITUDE_NULL)
-    protected Long longitude;
+    protected Double longitude;
 }
