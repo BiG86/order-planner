@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Centralized exceptions handler for the book manager.
+ * Centralized exceptions handler for the order planner.
  */
 @Slf4j
 @ControllerAdvice

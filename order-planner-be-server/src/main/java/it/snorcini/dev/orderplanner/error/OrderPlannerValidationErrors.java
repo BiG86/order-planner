@@ -1,7 +1,7 @@
 package it.snorcini.dev.orderplanner.error;
 
 /**
- * Book manager Validation Error Codes complete list.
+ * Order Planner Validation Error Codes complete list.
  */
 public final class OrderPlannerValidationErrors {
     public static final String ORDERS_NULL = "orderplanner.be.order.orders.null";

@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * DTO used to update a Book.
+ * DTO used to update an Order.
  * <p>
  * Methods:
  * - constructor

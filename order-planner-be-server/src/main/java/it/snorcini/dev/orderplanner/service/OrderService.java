@@ -10,7 +10,7 @@ import it.snorcini.dev.orderplanner.exception.OrderPlannerServiceException;
 import jakarta.validation.Valid;
 
 /**
- * Service interface to manage Book data.
+ * Service interface to manage Order data.
  */
 public interface OrderService {
 

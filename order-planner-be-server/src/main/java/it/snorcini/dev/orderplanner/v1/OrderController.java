@@ -58,7 +58,7 @@ public class OrderController {
     public ResponseEntity<OrderPlannerBaseResponse> updateOrder(
             @Valid @RequestBody final UpdateOrderDTO updateOrderDTO)
             throws OrderPlannerServiceException {
-        log.debug("orderController.updateOrder[application = {}]", updateOrderDTO);
+        log.debug("orderController.updateOrder[order = {}]", updateOrderDTO);
         return new ResponseEntity<>(
                 orderService.updateOrder(updateOrderDTO),
                 HttpStatus.OK);
