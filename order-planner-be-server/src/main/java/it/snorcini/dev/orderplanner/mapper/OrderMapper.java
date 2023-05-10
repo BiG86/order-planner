@@ -40,9 +40,9 @@ public interface OrderMapper {
     /**
      * From update dto to entity.
      *
-     * @param orderDTO    the application dto
+     * @param orderDTO    the order dto
      * @param uid         entity id to be updated
-     * @return the book entity with activities
+     * @return the order entity
      */
     @Mapping(target = "status", source = "orderDTO.status")
     Order updateOrderDTOToOrderEntity(UpdateOrderDTO orderDTO,

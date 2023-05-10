@@ -27,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +60,9 @@ public class OrderServiceImplementation extends BaseService implements OrderServ
      */
     @NotNull
     private final OrderMapper orderMapper;
+
+    private List<Coordinate> currentPlan;
+    private List<Coordinate> previousPlan;
 
     /**
      * Save a new Order.
@@ -116,7 +120,7 @@ public class OrderServiceImplementation extends BaseService implements OrderServ
     }
 
     /**
-     * Retrieve Orders.
+     * Retrieve Orders with optional filter.
      *
      * @return The response containing the order list
      */
@@ -158,6 +162,64 @@ public class OrderServiceImplementation extends BaseService implements OrderServ
         plan.add(Coordinate.builder().latitude(start.getLatitude()).longitude(start.getLongitude()).build());
         orderList.forEach(order -> order.getPackages().forEach(aPackage -> plan.add(aPackage.getDestination())));
         plan.add(Coordinate.builder().latitude(start.getLatitude()).longitude(start.getLongitude()).build());
-        return PlanResponse.builder().plan(plan).build();
+        currentPlan = plan;
+        simulateAnnealing(30, 1000000, 0.001);
+        return PlanResponse.builder().plan(currentPlan).build();
+    }
+
+    private double distanceToPoint(final Coordinate coordinate1, final Coordinate coordinate2) {
+        double x = Math.abs(coordinate1.getLongitude() - coordinate2.getLongitude());
+        double y = Math.abs(coordinate1.getLatitude() - coordinate2.getLatitude());
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+
+    private void swapPoints(final List<Coordinate> plan) {
+        int a = ThreadLocalRandom.current().nextInt(1, plan.size() - 1);
+        int b = ThreadLocalRandom.current().nextInt(1, plan.size() - 1);
+        previousPlan = plan;
+        Coordinate x = plan.get(a);
+        Coordinate y = plan.get(b);
+        plan.set(a, y);
+        plan.set(b, x);
+    }
+
+    private void revertSwap() {
+        currentPlan = previousPlan;
+    }
+
+    private double getDistance() {
+        double distance = 0;
+        for (int index = 0; index < currentPlan.size(); index++) {
+            Coordinate starting = currentPlan.get(index);
+            Coordinate destination;
+            if (index + 1 < currentPlan.size()) {
+                destination = currentPlan.get(index + 1);
+            } else {
+                destination = currentPlan.get(0);
+            }
+            distance += distanceToPoint(starting, destination);
+        }
+        return distance;
+    }
+
+    private void simulateAnnealing(final double startingTemperature,
+                                   final int numberOfIterations, final double coolingRate) {
+        double t = startingTemperature;
+        double bestDistance = getDistance();
+
+        for (int i = 0; i < numberOfIterations; i++) {
+            if (t > 0.1) {
+                swapPoints(currentPlan);
+                double currentDistance = getDistance();
+                if (currentDistance < bestDistance) {
+                    bestDistance = currentDistance;
+                } else if (Math.exp((bestDistance - currentDistance) / t) < Math.random()) {
+                    revertSwap();
+                }
+            } else {
+                continue;
+            }
+            t *= coolingRate;
+        }
     }
 }

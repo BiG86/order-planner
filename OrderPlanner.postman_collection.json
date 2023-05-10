@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "f03eae60-4ee9-4d06-a876-16baee5f2d24",
+		"name": "OrderPlanner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1553095"
+	},
+	"item": [
+		{
+			"name": "insert order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"packages\": [\n                {\n                    \"description\": \"TestBox3updated\",\n                    \"destination\": {\n                        \"latitude\": 49.4385,\n                        \"longitude\": 8.992513\n                    }\n                },\n                {\n                    \"description\": \"TestBox4updated\",\n                    \"destination\": {\n                        \"latitude\": 54.438396,\n                        \"longitude\": 12.972514\n                    }\n                }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://order-planner:8081/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"order-planner"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update order",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"uid\" : \"645ac430ce5e09286dad3d33\",\n    \"packages\": [\n                {\n                    \"description\": \"TestBox3updated\",\n                    \"destination\": {\n                        \"latitude\": 49.4385,\n                        \"longitude\": 8.992513\n                    }\n                },\n                {\n                    \"description\": \"TestBox4updated\",\n                    \"destination\": {\n                        \"latitude\": 54.438396,\n                        \"longitude\": 12.972514\n                    }\n                }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://order-planner:8081/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"order-planner"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "planController",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://order-planner:8081/api/v1/plan/639b2df6493f8d387f641586",
+					"protocol": "http",
+					"host": [
+						"order-planner"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"plan",
+						"639b2df6493f8d387f641586"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get orders filtered",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://order-planner:8081/api/v1/order?status=INITIAL",
+					"protocol": "http",
+					"host": [
+						"order-planner"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "INITIAL"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

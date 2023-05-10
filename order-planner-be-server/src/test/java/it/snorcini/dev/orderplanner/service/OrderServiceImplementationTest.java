@@ -1,9 +1,13 @@
 package it.snorcini.dev.orderplanner.service;
 
+import com.querydsl.core.types.Predicate;
 import it.snorcini.dev.orderplanner.dto.OrderDTO;
 import it.snorcini.dev.orderplanner.dto.OrderListResponse;
 import it.snorcini.dev.orderplanner.dto.OrderPlannerBaseResponse;
+import it.snorcini.dev.orderplanner.dto.PlanResponse;
 import it.snorcini.dev.orderplanner.dto.UpdateOrderDTO;
+import it.snorcini.dev.orderplanner.entity.Coordinate;
+import it.snorcini.dev.orderplanner.entity.Depot;
 import it.snorcini.dev.orderplanner.entity.Order;
 import it.snorcini.dev.orderplanner.entity.OrderStatus;
 import it.snorcini.dev.orderplanner.entity.Package;
@@ -25,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -39,6 +44,7 @@ import static org.mockito.Mockito.verify;
 class OrderServiceImplementationTest {
 
     private final String orderId = "1L";
+    private final String depotId = "2L";
     private OrderServiceImplementation target;
     private OrderServiceImplementation orderServiceImplementationSpy;
     @MockBean
@@ -55,6 +61,7 @@ class OrderServiceImplementationTest {
     private UpdateOrderDTO updateOrderDTO;
     private List<Order> orderList;
     private List<Package> packagesList;
+    private List<Package> packagesList2;
     @Mock
     private List<Order> orderListMock;
 
@@ -62,7 +69,15 @@ class OrderServiceImplementationTest {
     public void initialize() {
         // Initialize objects
         packagesList = new ArrayList<>();
-        packagesList.add(Package.builder().build());
+        packagesList.add(Package.builder().description("testDescription")
+                .destination(Coordinate.builder().latitude(2.12).longitude(2.3).build()).build());
+        packagesList.add(Package.builder().description("testDescription2")
+                .destination(Coordinate.builder().latitude(4.12).longitude(1.37).build()).build());
+        packagesList2 = new ArrayList<>();
+        packagesList2.add(Package.builder().description("testDescription4")
+                .destination(Coordinate.builder().latitude(5.17).longitude(8.14).build()).build());
+        packagesList2.add(Package.builder().description("testDescription4")
+                .destination(Coordinate.builder().latitude(3.72).longitude(9.37).build()).build());
         orderDTO = new OrderDTO();
         updateOrderDTO = new UpdateOrderDTO();
         orderDTO.setPackages(packagesList);
@@ -70,14 +85,17 @@ class OrderServiceImplementationTest {
         updateOrderDTO.setPackages(packagesList);
         updateOrderDTO.setStatus(OrderStatus.INITIAL);
         orderList = new ArrayList<>();
-        orderList.add(Order.builder().build());
+        orderList.add(Order.builder().packages(packagesList).build());
+        orderList.add(Order.builder().packages(packagesList2).build());
         doReturn(orderList.stream()).when(orderListMock).stream();
 
         // Instantiate test target and spy
         target = new OrderServiceImplementation(
                 orderRepositoryMock,
                 depotRepositoryMock,
-                orderMapperMock
+                orderMapperMock,
+                null,
+                null
         );
         orderServiceImplementationSpy = spy(target);
     }
@@ -93,7 +111,21 @@ class OrderServiceImplementationTest {
 
         assertEquals(orderListResponse.getPayload().size(), orderList.size(), "These objects should be equal");
         verify(orderRepositoryMock, times(1)).findAll();
-        verify(orderMapperMock, times(1)).orderToDetailOrderDTO(any(Order.class));
+        verify(orderMapperMock, times(orderList.size())).orderToDetailOrderDTO(any(Order.class));
+    }
+
+    @Test
+    @DisplayName("When asking for a filtered Order the test should retrieve an Order inside a list")
+    void testGetOrders02() {
+        //PREPARE
+        doReturn(orderListMock).when(orderRepositoryMock).findAll(any(Predicate.class));
+
+        //RUN & VERIFY
+        OrderListResponse orderListResponse = target.getOrders(OrderStatus.INITIAL);
+
+        assertEquals(orderListResponse.getPayload().size(), orderList.size(), "These objects should be equal");
+        verify(orderRepositoryMock, times(1)).findAll(any(Predicate.class));
+        verify(orderMapperMock, times(orderList.size())).orderToDetailOrderDTO(any(Order.class));
     }
 
     @Test
@@ -186,5 +218,22 @@ class OrderServiceImplementationTest {
                 any(),
                 any()
         );
+    }
+
+    @Test
+    @DisplayName("The test should retrieve the delivery plan")
+    void testStartPlan01() {
+        //PREPARE
+        Depot depot = Depot.builder().uid(depotId).latitude(1.0).longitude(1.0).build();
+        doReturn(Optional.of(depot)).when(depotRepositoryMock).findByUid(anyString());
+        doReturn(orderList).when(orderRepositoryMock).findAll();
+
+        //RUN
+        PlanResponse response = target.startPlan(depotId);
+
+        //VERIFY
+        assertNotNull(response);
+        verify(orderRepositoryMock, times(1)).findAll();
+        verify(depotRepositoryMock, times(1)).findByUid(anyString());
     }
 }

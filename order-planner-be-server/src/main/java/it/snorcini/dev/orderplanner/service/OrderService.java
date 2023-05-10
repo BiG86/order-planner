@@ -42,7 +42,7 @@ public interface OrderService {
     OrderListResponse getOrders(OrderStatus status) throws OrderPlannerServiceException;
 
     /**
-     * Retrieve Books with optional filter.
+     * Retrieve the delivery plan.
      *
      * @param depotUid the starting depot id
      * @return The response containing the order list
